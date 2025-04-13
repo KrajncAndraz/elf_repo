@@ -33,7 +33,7 @@ if echo "$output" | grep -q -e "Error opening file" \
                             -e "Not a valid ELF file"; then
     echo "Test 2 failed: Detected an error when parsing ELF file" >&2
     exit 1
-else if echo $output | grep -q -e "Symbol table not found in the ELF file" \
+elif echo $output | grep -q -e "Symbol table not found in the ELF file" \
                                -e "String table not found in the ELF file"; then
     echo "Test 2 failed: Unable to find symbol/string table" >&2
     exit 1
@@ -50,7 +50,7 @@ if echo "$output" | grep -q -e "Error opening file" \
                             -e "Not a valid ELF file"; then
     echo "Test 3 failed: Detected an error when parsing ELF file" >&2
     exit 1
-else if echo $output | grep -q -e ".data section not found" \
+elif echo $output | grep -q -e ".data section not found" \
                                -e "Variable not found:"\
                                -e "is not a variable"\
                                -e "Unsupported variable size"; then

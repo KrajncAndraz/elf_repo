@@ -46,4 +46,3 @@ jobs:
           else
             echo "All tests passed. napaka.txt is empty."
           fi
-
