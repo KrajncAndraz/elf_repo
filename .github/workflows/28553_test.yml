@@ -7,7 +7,6 @@ on:
 
 jobs:
   test:
-    name: Check and Run Tests
     runs-on: self-hosted
     name: Compile and Run Tests
     steps:
