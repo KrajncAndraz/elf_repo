@@ -218,6 +218,7 @@ int elf_28865_glava(const char *elf_path)
 
 int elf_28865_simboli(const char *elf_path)
 {
+    fprintf(stderr, "Symbol table not found in the ELF file\n\n\n");
     struct stat st;
     int fd;
     char *addr;
