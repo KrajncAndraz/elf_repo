@@ -1,0 +1,47 @@
+name: Run Tests for C ELF Project
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: sudo apt update && sudo apt install -y build-essential
+
+      - name: Run tests and redirect errors
+        run: |
+          chmod +x test/test_elf_changer.sh
+          ./test/test_elf_changer.sh || true  # Don't fail yet, we check later
+
+      - name: Upload napaka.txt
+        uses: actions/upload-artifact@v4
+        with:
+          name: napaka
+          path: napaka.txt
+
+
+  verify:
+    runs-on: self-hosted
+    needs: test
+    steps:
+      - name: Download napaka.txt
+        uses: actions/download-artifact@v4
+        with:
+          name: napaka
+
+      - name: Check if napaka.txt is empty
+        run: |
+          if [ -s napaka.txt ]; then
+            echo "Errors found during testing:"
+            cat napaka.txt
+            exit 1
+          else
+            echo "All tests passed. napaka.txt is empty."
+          fi

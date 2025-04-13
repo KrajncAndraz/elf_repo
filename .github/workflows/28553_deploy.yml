@@ -1,0 +1,39 @@
+name: Deploy ELF Tools to DockerHub
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+    needs: verify
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install tools
+        run: sudo apt-get update && sudo apt-get install -y build-essential
+
+      - name: Build project
+        run: make build
+
+      - name: Create Dockerfile
+        run: |
+          echo 'FROM ubuntu:22.04' > Dockerfile
+          echo 'RUN apt-get update && apt-get install -y libc6' >> Dockerfile
+          echo 'COPY elf_changer /usr/local/bin/elf_changer' >> Dockerfile
+          echo 'COPY hello /usr/local/bin/hello' >> Dockerfile
+          echo 'RUN chmod +x /usr/local/bin/elf_changer' >> Dockerfile
+          echo 'ENTRYPOINT ["/usr/local/bin/elf_changer"]' >> Dockerfile
+
+      - name: Build Docker image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/feri_sa:latest .
+
+      - name: Login to DockerHub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Push image to DockerHub
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/feri_sa:latest
