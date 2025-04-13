@@ -8,6 +8,7 @@ on:
 jobs:
   test:
     runs-on: self-hosted
+    name: Compile and Run Tests
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -26,8 +27,8 @@ jobs:
           name: napaka
           path: napaka.txt
 
-
   verify:
+    name: Verify Test Results
     runs-on: self-hosted
     needs: test
     steps:
@@ -45,3 +46,4 @@ jobs:
           else
             echo "All tests passed. napaka.txt is empty."
           fi
+

@@ -175,6 +175,8 @@ Elf64_Sym *find_symbol_by_name(char *elf_start, const char *symbol_name)
     return NULL;
 }
 
+
+
 int elf_28865_glava(const char *elf_path)
 {
     struct stat st;
@@ -300,7 +302,7 @@ int elf_28865_menjaj(char **argv)
         Elf64_Sym *sym = find_symbol_by_name(addr, var_name);
         if (!sym)
         {
-            fprintf(stderr, "  Variable '%s' not found\n", var_name);
+            fprintf(stderr, "  Variable not found: '%s'\n", var_name);
             continue;
         }
         
