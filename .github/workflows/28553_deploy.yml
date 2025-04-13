@@ -1,15 +1,16 @@
 name: Deploy ELF Tools to DockerHub
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Run Tests for C ELF Project"]
+    types:
+      - completed
 
 jobs:
   build-and-deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: Build and Deploy to DockerHub
     runs-on: self-hosted
-    needs: verify
 
     steps:
       - name: Checkout repo
